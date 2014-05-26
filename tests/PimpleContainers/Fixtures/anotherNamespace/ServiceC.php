@@ -1,6 +1,6 @@
 <?php
 
-namespace PimpleContainers\anotherNamespace;
+namespace PimpleContainers\Fixtures\anotherNamespace;
 
 /**
  * Just to test loading in a different namespace

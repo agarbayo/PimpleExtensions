@@ -1,6 +1,6 @@
 <?php
 
-namespace PimpleContainers;
+namespace PimpleContainers\Fixtures;
 
 /**
  */

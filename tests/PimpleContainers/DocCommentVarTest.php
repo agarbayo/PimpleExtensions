@@ -32,12 +32,12 @@ class DocCommentVarTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function cases() {
-        $serviceBClassName = '\PimpleContainers\ServiceB';
-        $serviceAClassName = '\PimpleContainers\ServiceA';
+        $serviceBClassName = '\PimpleContainers\Fixtures\ServiceB';
+        $serviceAClassName = '\PimpleContainers\Fixtures\ServiceA';
         return [
             array($serviceBClassName, $serviceAClassName, 'serviceB'),
             array($serviceBClassName, $serviceAClassName, 'serviceB2'),
-            array('\PimpleContainers\anotherNamespace\ServiceC', $serviceAClassName, 'serviceC'),
+            array('\PimpleContainers\Fixtures\anotherNamespace\ServiceC', $serviceAClassName, 'serviceC'),
             //Invalid cases
             array(null, $serviceAClassName, 'notInjectedJustAComment'),
             array(null, $serviceAClassName, 'notInjectedLacksDocComment'),

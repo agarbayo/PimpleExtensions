@@ -1,15 +1,15 @@
 <?php
 
-namespace PimpleContainers;
+namespace PimpleContainers\Fixtures;
 
-use PimpleContainers\anotherNamespace\ServiceC;
+use PimpleContainers\Fixtures\anotherNamespace\ServiceC;
 
 /**
  * Dummy service for testing injection
  */
 class ServiceA {
     
-    /** @var \PimpleContainers\ServiceB An instance from serviceB will be injected */
+    /** @var \PimpleContainers\Fixtures\ServiceB An instance from serviceB will be injected */
     private $serviceB;
     
     /** @var ServiceB  Injects on shortName in this namespace */
