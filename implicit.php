@@ -7,7 +7,7 @@ require 'vendor/autoload.php';
      NB Finds when looking for usages
  *  Services::getHeater if type is anotated in phpdoc it will make work autocompletion and find usages
  * 
-  2 - Lazy load on function usage. Container that lazy load by default evth or an annotation in the class???
+  2 - Lazy load on function usage. Container that lazy load by default evth or an annotation in the class??
     ServiceRef achieves lazy call. Considering the split of one class into two with deps that
  *  almost always uses seems a great solution as well. Eg: MyGoalService always uses all 
  *  of their deps, but LRS might use 1,2,3 or none deps on each request.
@@ -72,24 +72,7 @@ class PotSensor {
   }
 
   
-  // makes sure class is only init on first function call
-  class ServiceRef {
-      private $container;
-      private $serviceName;
-      private $instance = null;
-      
-      public function __construct($c, $name) {
-          $this->container = $c;
-          $this->serviceName = $name;
-      }
-      
-      public function __call($name, $arguments) {
-          if ($this->instance == null) {
-              $this->instance = $this->container[$this->serviceName];
-          }
-          call_user_func_array(array($this->instance, $name), $arguments);
-      }
-  }
+
 
   class S {
       public static $a = 1;
