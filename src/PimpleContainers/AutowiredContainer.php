@@ -18,11 +18,15 @@ class AutowiredContainer extends \Pimple\Container {
     /** @var \SplObjectStorage Bypass injections for some callables: factory, protected */
     private $notInjected;
     
+    /** @var \SplObjectStorage Keep track of factories. Duplicate from /Pimple/Container where is private */
+    private $factories;
+    
     private $notInjectedValues = array();
     
     public function __construct(array $values = array()) {
         parent::__construct($values);
         $this->notInjected = new \SplObjectStorage();
+        $this->factories   = new \SplObjectStorage();
     }
     
     public function offsetSet($id, $value) {
@@ -36,6 +40,21 @@ class AutowiredContainer extends \Pimple\Container {
             $value = $this->addClosure($value);
         }
         parent::offsetSet($id, $value);
+    }
+    
+    public function offsetGet($id) {
+        $value = parent::offsetGet($id);
+        if ($this->isFactoryId($id)) {
+            $this->injectProperties($value);
+        }
+        return $value;
+    }
+    
+    private function isFactoryId($id) {
+        if(isset($this->notInjectedValues[$id])) {
+            $value = $this->notInjectedValues[$id];
+        }
+        return (isset($value))?isset($this->factories[$value]):false;
     }
 
     function addClosure($factory) {
@@ -108,6 +127,7 @@ class AutowiredContainer extends \Pimple\Container {
     public function factory($callable) {
         $ret = parent::factory($callable);
         $this->notInjected->attach($callable);
+        $this->factories->attach($callable);
         return $ret;
     }
     
