@@ -105,7 +105,6 @@ class AutowiredContainer extends \Pimple\Container {
     private function getInstance($className) {
         // Try in container with className as is
         if (isset($this[$className])) {
-            print "Found as is $className \n";
             return $this[$className];
         }
         
@@ -113,13 +112,10 @@ class AutowiredContainer extends \Pimple\Container {
         $tokens = split("\\\\", $className);
         $shortName = array_pop($tokens);
         if (isset($this[$shortName])) {
-            print "Found short $className as $shortName \n";
             return $this[$shortName];
         } 
-        print "Not Found $shortName \n";
         
         // Cannot be found, create new instance and add it to container
-        print "Creating new $className \n";
         $this[$shortName] = new $className();
         return $this[$shortName];
     }

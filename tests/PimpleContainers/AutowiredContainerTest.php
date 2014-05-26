@@ -14,7 +14,6 @@ class AutowiredContainerTest extends \PHPUnit_Framework_TestCase
         
         
         $serviceA = $c['ServiceA'];
-        var_dump($serviceA);
         $this->assertInstanceOf('\PimpleContainers\ServiceB', $serviceA->getServiceB());
         $this->assertInstanceOf('\PimpleContainers\ServiceB', $serviceA->getServiceB2());
         $this->assertInstanceOf('\PimpleContainers\anotherNamespace\ServiceC', $serviceA->getServiceC());
