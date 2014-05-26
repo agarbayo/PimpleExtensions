@@ -69,10 +69,7 @@ class DocCommentVar {
      */
     private function getImportedNamespaces() {
         //https://github.com/doctrine/common/blob/master/lib/Doctrine/Common/Reflection/StaticReflectionParser.php
-        // TODO Load from composer.json
-        $paths = [
-            'PimpleContainers\\' => array("src/", "tests/")
-        ];
+        $paths = include 'vendor/composer/autoload_namespaces.php';
         $finder = new \Doctrine\Common\Reflection\Psr0FindFile($paths);
         $c = $this->p->getDeclaringClass()->getName();
         $parser = new \Doctrine\Common\Reflection\StaticReflectionParser($c, $finder);
