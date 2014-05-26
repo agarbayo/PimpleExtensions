@@ -49,7 +49,6 @@ More examples of usage found in the unit tests.
 
 
 ## TODO
-- Fix composer.json
 - Support better coding to interfaces
 - Circular deps?
 - @factory for classes
