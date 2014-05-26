@@ -4,6 +4,8 @@ namespace PimpleContainers\Fixtures;
 
 use PimpleContainers\Fixtures\anotherNamespace\ServiceC;
 
+use PimpleContainers\Fixtures\anotherNamespace\ServiceC as ServiceAliased;
+
 /**
  * Dummy service for testing injection
  */
@@ -18,8 +20,8 @@ class ServiceA {
     /** @var ServiceC  Injects shortName imported with use keyword*/
     private $serviceC;
     
-    // TODO Test case with aliases
-    
+    /** @var ServiceAliased */
+    private $serviceAliased;
     
     /* *************************************************************************
      * Cases where nothing is injected
@@ -50,6 +52,10 @@ class ServiceA {
     
     public function getServiceC() {
         return $this->serviceC;
+    }
+    
+    public function getServiceAliased() {
+        return $this->serviceAliased;
     }
     
     public function getServiceBNotInjected() {

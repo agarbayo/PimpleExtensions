@@ -53,9 +53,8 @@ class DocCommentVar {
     
     private function findClassNameInImports($className) {
         $namespaces = $this->getImportedNamespaces();
-        foreach ($namespaces as $namespace) {
-            $tokens = split("\\\\", $namespace);
-            if(array_pop($tokens) == $className) {
+        foreach ($namespaces as $alias => $namespace) {
+            if($alias == strtolower($className)) {
                 return $namespace;
             }
         }
@@ -65,7 +64,8 @@ class DocCommentVar {
     /**
      * Uses https://github.com/doctrine/common/blob/master/lib/Doctrine/Common/Reflection/StaticReflectionParser.php
      * alt: https://github.com/Andrewsville/PHP-Token-Reflection/tree/master
-     * @return string[]
+     * 
+     * @return string[string] Keys is class name or alias and values are full class names
      */
     private function getImportedNamespaces() {
         //https://github.com/doctrine/common/blob/master/lib/Doctrine/Common/Reflection/StaticReflectionParser.php

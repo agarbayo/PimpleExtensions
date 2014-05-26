@@ -7,9 +7,7 @@ require 'vendor/autoload.php';
      NB Finds when looking for usages
  *  Services::getHeater if type is anotated in phpdoc it will make work autocompletion and find usages
  * 
-  2- Lazy load: on construction 
- * 
-  2b - Lazy load on function usage
+  2 - Lazy load on function usage. Container that lazy load by default evth or an annotation in the class???
     ServiceRef achieves lazy call. Considering the split of one class into two with deps that
  *  almost always uses seems a great solution as well. Eg: MyGoalService always uses all 
  *  of their deps, but LRS might use 1,2,3 or none deps on each request.
@@ -26,35 +24,13 @@ require 'vendor/autoload.php';
  *      if an interface is created and pimple key matches interface.
  * NEXT
  * >>> 
- *    ? Discarded two traits, because of conflicting problems. Use inheritance overriding
- *      offsetGet. Organize code in two traits: autowire, serviceRef. 
- *    ? Inject static props
- *    ? Use namespaces
- *    ? will autowiring resolve circular deps
  *    ? new ReferenceContainer extends AutowiredContainer. Using extends to force always to be
  *          the first method in execute. No possibility though of not autowire
  *          test it if really enhance performance?
  *          supports @noRefs for classes for which we know wont benefit from it.
  *          Impl only after testing how the magic method in between affects performance
- *    ? trait to automatically resolve entries in container. Eg the case
- *          $['Heater'] = function () { return new Heater(); }
- *      Annotate classes as @singleton or @factory
  *    
  *      
-*/
-
-
-/*
-Tries to follow the implicit declarations example of
- http://jonasboner.com/2008/10/06/real-world-scala-dependency-injection-di/
-
-Because there is no implicit keyword in PHP, an alternative would be to use Pimple as a trait having all of the getServiceName() defined and inside the closures.
-That way it gets autocompletion and lazyloading.
-It however makes losing infomration about who depends on who, minor issue i think.
-
-PHP doesnt allow modifying class code at runtime http://stackoverflow.com/questions/1593497/php-runtime-class-modification so an opportunity seems lost of achieving lazy function the by replacing getXX impl.
-
-Having a external yaml is clumsy http://symfony.com/doc/current/book/service_container.html
 */
 
 //---------------------------------------------------------------
