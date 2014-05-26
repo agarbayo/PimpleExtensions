@@ -43,21 +43,58 @@ class AutowiredContainer extends \Pimple\Container {
     }
     
     public function offsetGet($id) {
-        $value = parent::offsetGet($id);
+        try {
+            $value = parent::offsetGet($id);
+        } catch (\InvalidArgumentException $e) {
+            $className = $this->findClass($id);
+            if ($className == null) { throw $e; }
+            
+            $instance = new $className();
+            $this->injectProperties($instance);
+            parent::offsetSet($id, $instance);
+            $value = $instance;
+        }
         if ($this->isFactoryId($id)) {
             $this->injectProperties($value);
         }
         return $value;
     }
     
+    /**
+     * 
+     * @param string $id
+     * @return boolean True if the id is a factory service
+     */
     private function isFactoryId($id) {
         if(isset($this->notInjectedValues[$id])) {
             $value = $this->notInjectedValues[$id];
         }
         return (isset($value))?isset($this->factories[$value]):false;
     }
+    
+    /**
+     * Searches if $id is a valid full or short name for a class.
+     * 
+     * @param string $id
+     * @return string|null Full class name or null if no valid class name found
+     */
+    private function findClass($id) {
+        if (class_exists($id)) {
+            return $id;
+        }
+        // Look for similar short class name
+        $declaredClasses = get_declared_classes();
+        foreach ($declaredClasses as $className) {
+            $tokens = split('\\\\', $className);
+            if (array_pop($tokens)==$id) {
+                return $className;
+            }
+        }
+        
+        return null;
+    }
 
-    function addClosure($factory) {
+    private function addClosure($factory) {
         $callable = function ($value, $c) {
             if (is_object($value)) {
                 $this->injectProperties($value);
