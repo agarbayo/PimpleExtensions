@@ -37,4 +37,17 @@ class AutowiredContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\PimpleContainers\Fixtures\ServiceB', $serviceA1->getServiceB());
         $this->assertInstanceOf('\PimpleContainers\Fixtures\ServiceB', $serviceA2->getServiceB());
     }
+    
+    public function testInjectionWithoutBoilerplate()
+    {
+        $c = new \PimpleContainers\AutowiredContainer();
+        
+        $serviceA = $c['ServiceA'];
+        $this->assertNotNull($serviceA);
+        $this->assertInstanceOf('\PimpleContainers\Fixtures\ServiceB', $serviceA->getServiceB());
+        
+        $serviceAFull = $c['\PimpleContainers\Fixtures\ServiceA'];
+        $this->assertNotNull($serviceAFull);
+        $this->assertInstanceOf('\PimpleContainers\Fixtures\ServiceB', $serviceAFull->getServiceB());
+    }
 }
