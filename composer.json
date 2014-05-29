@@ -1,4 +1,5 @@
 {
+  "name":"agarbayo/pimple-extensions",
   "require": {
     "pimple/pimple": "dev-master",
     "doctrine/common":"dev-master"
