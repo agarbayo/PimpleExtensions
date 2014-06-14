@@ -1,5 +1,5 @@
 
-Pimple extension that uses php doc annotations to automatically resolves and inject service dependencies.
+Pimple extension that uses php doc annotations to automatically resolve and inject service dependencies.
 
 ## Example
 
@@ -36,7 +36,7 @@ $serviceA = $c['ServiceA'];
 $serviceB = $serviceA->getServiceB();
 ```
 To avoid writing boilerplate, when services are not found in the container, it assumes
-the convention that a singleton with the short class name should be exists and adds it
+the convention that a singleton with the short class name should exist and adds it
 to the container.
 
 More examples of usage found in the unit tests.
