@@ -50,4 +50,16 @@ class AutowiredContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($serviceAFull);
         $this->assertInstanceOf('\PimpleContainers\Fixtures\ServiceB', $serviceAFull->getServiceB());
     }
+    
+    public function atestCyclicDependencies() {
+        $c = new \PimpleContainers\AutowiredContainer();
+        
+        $serviceAB = $c['ServiceAB'];
+        $this->assertNotNull($serviceAB);
+        
+        $serviceBA = $serviceAB->getServiceBA();
+        $this->assertInstanceOf('\PimpleContainers\Fixtures\ServiceBA', $serviceBA);
+        $this->assertInstanceOf('\PimpleContainers\Fixtures\ServiceAB', $serviceBA->getServiceAB());
+    }
+       
 }

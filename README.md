@@ -50,6 +50,5 @@ More examples of usage found in the unit tests.
 
 ## TODO
 - Support better coding to interfaces
-- Circular deps?
 - @factory for classes
 - Merge with lazyref branch

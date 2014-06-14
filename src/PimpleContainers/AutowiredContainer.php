@@ -21,6 +21,9 @@ class AutowiredContainer extends \Pimple\Container {
     /** @var \SplObjectStorage Keep track of factories. Duplicate from /Pimple/Container where is private */
     private $factories;
     
+    /** Keep track of classes being injected to avoid inf loops on cyclic dependencies */
+    private $tmpDeps;
+    
     private $notInjectedValues = array();
     
     public function __construct(array $values = array()) {
@@ -94,6 +97,12 @@ class AutowiredContainer extends \Pimple\Container {
         return null;
     }
 
+    /**
+     * Adds to $factory the closure that will inject the properties
+     * 
+     * @param type $factory
+     * @return callable
+     */
     private function addClosure($factory) {
         $callable = function ($value, $c) {
             if (is_object($value)) {
@@ -107,7 +116,7 @@ class AutowiredContainer extends \Pimple\Container {
         };
         
         return $evalue;
-    }
+    } 
 
     private function injectProperties($obj) {
         $reflect = new \ReflectionClass($obj);
@@ -120,8 +129,12 @@ class AutowiredContainer extends \Pimple\Container {
             return $value == null;
         });
         
+        $className = '\\'.$reflect->getName();
+        $this->tmpDeps[$className] = $obj;
         array_walk($props, ['\PimpleContainers\AutowiredContainer', 'injectProperty'], $obj);
+        unset($this->tmpDeps[$className]);
     }
+    
     
     private function injectProperty(\ReflectionProperty $p, $idx, $obj) {
         $docVar = new DocCommentVar($p);
@@ -140,6 +153,13 @@ class AutowiredContainer extends \Pimple\Container {
      * @return mixed
      */
     private function getInstance($className) {
+        
+        // Cyclic case: Is it a dependency currently being resolved
+        if (isset($this->tmpDeps[$className])) {
+            // Return directly the reference. Taking it from the container would enter in an infinite loop
+            return $this->tmpDeps[$className];
+        }
+        
         // Try in container with className as is
         if (isset($this[$className])) {
             return $this[$className];
@@ -150,7 +170,7 @@ class AutowiredContainer extends \Pimple\Container {
         $shortName = array_pop($tokens);
         if (isset($this[$shortName])) {
             return $this[$shortName];
-        } 
+        }
         
         // Cannot be found, create new instance and add it to container
         $this[$shortName] = new $className();
